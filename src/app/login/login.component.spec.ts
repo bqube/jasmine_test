@@ -1,7 +1,8 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
-import { LoginComponent } from "./login.component";
-
+import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
+import { LoginComponent, loggedInUser } from "./login.component";
 
 describe('Component: Login', () => {
 
@@ -12,7 +13,13 @@ describe('Component: Login', () => {
 
 		// refine the test module by declaring the test component
 		TestBed.configureTestingModule({
-			imports: [ReactiveFormsModule, FormsModule],
+			imports: [
+				ReactiveFormsModule,
+				FormsModule,
+				HttpModule,
+				FormsModule,
+				HttpClientModule,
+			],
 			declarations: [LoginComponent]
 		});
 
@@ -22,11 +29,13 @@ describe('Component: Login', () => {
 		// get test component from the fixture
 		component = fixture.componentInstance;
 		component.ngOnInit();
+		fixture.detectChanges();
 	});
 
-	it('form invalid when empty', () => {
+	it('emailform invalid when empty', () => {
 		expect(component.form.valid).toBeFalsy();
 	});
+
 
 	it('email field validity', () => {
 		let errors = {};
@@ -70,18 +79,5 @@ describe('Component: Login', () => {
 		component.form.controls['email'].setValue("amitbhusi@gmail.com");
 		component.form.controls['password'].setValue("password@123");
 		expect(component.form.valid).toBeTruthy();
-
-		let loginUser: any;
-
-		// let user: User;
-		// // Subscribe to the Observable and store the user in a local variable.
-		// component.loggedIn.subscribe((value) => user = value);
-
-		// Trigger the login function
-		component.login();
-
-		// Now we can check to make sure the emitted value is correct
-		expect(loginUser.email).toBe("amitbhusi@gmail.com");
-		expect(loginUser.user).toBe("16638");
 	});
 });
